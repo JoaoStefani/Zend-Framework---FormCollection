@@ -1,0 +1,374 @@
+<?php
+    $form = $this->form;
+    $form->prepare();
+?>
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Cadastrar Fornecedor
+                    <button class="btn btn-info pull-right" onclick="javascript:history.back();self.location.reload();"><span class="fa fa-chevron-left"> Voltar</span></button>
+                </h1>
+                <div class="row">
+                    <?php
+                        echo $this->form()->openTag($form);
+                        echo $this->message();
+                        $fornecedor = $form->get('fornecedor');
+                        echo $this->formHidden($form->get('csrf'));
+                    ?>
+                    
+                    <div class="col-md-4">
+                        <?php 
+                            echo $this->formLabel($fornecedor->get('razao_social'));
+                            echo $this->formElement($fornecedor->get('razao_social'));
+                            echo $this->formElementErrors($fornecedor->get('razao_social'));
+                        ?>
+                    </div>
+                    <div class="col-md-4">
+                        <?php 
+                            echo $this->formLabel($fornecedor->get('nome_fantasia'));
+                            echo $this->formElement($fornecedor->get('nome_fantasia'));
+                            echo $this->formElementErrors($fornecedor->get('nome_fantasia'));
+                        ?>
+                    </div>
+                    <!--Bloco do Documetnos-->
+                    <div class="col-md-4">
+                        <label>Documento</label>
+                        <select class="form-control input-sm" id="documento">
+                            <option value="0">Selecione o Documento</option>
+                            <option value="1">Pessoa Física</option>
+                            <option value="2">Pessoa Jurídica</option>
+                        </select></br>
+                    </div>
+                    <?php
+                        $documento = $fornecedor->get('documento');
+                    ?>    
+                    <?php
+                        /*
+                         * João Marcos R Stefani
+                         * Este bloco verifica se esta vindo cpf. 
+                         */
+                        if($documento->get('cpf')->getvalue()){
+                            echo '<div class="col-md-12" id="bloco_fisica">';
+                        }else{
+                            echo '<div class="col-md-12" id="bloco_fisica" style="display: none;">';
+                        }
+                    ?>
+                        <div class="col-md-12 well">
+                            <h4>Pessoa Física
+                                <button type="button" title="Remover Documento" class="btn btn-danger pull-right btn-xs" onclick="removerDocumento()"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </h4>
+                            <hr>
+                            <div class="col-md-4">
+                                <?php 
+                                    echo $this->formLabel($documento->get('cpf'));
+                                    echo $this->formElement($documento->get('cpf'));
+                                    echo $this->formElementErrors($documento->get('cpf'));
+                                ?>
+                            </div>    
+                        </div>    
+                    </div>
+                    <?php
+                        /*
+                        * João Marcos R Stefani
+                        * Este bloco verifica se esta vindo cnpj. 
+                        */
+                        if($documento->get('cnpj')->getvalue()){
+                            echo '<div class="col-md-12" id="bloco_juritica">';
+                        }else{
+                            echo '<div class="col-md-12" id="bloco_juritica" style="display: none;">';
+                        }
+                    ?>
+                        <div class="col-md-12 well">
+                            <h4>Pessoa Jurídica
+                                <button type="button" title="Remover Documento" class="btn btn-danger pull-right btn-xs" onclick="removerDocumento()"><i class="fa fa-times" aria-hidden="true"></i></button>
+                            </h4>
+                            <hr>
+                            <div class="col-md-4">
+                                <?php 
+                                    echo $this->formLabel($documento->get('cnpj'));
+                                    echo $this->formElement($documento->get('cnpj'));
+                                    echo $this->formElementErrors($documento->get('cnpj'));
+                                ?>
+                            </div>    
+                        </div>    
+                    </div>
+                    <!--Bloco do Documetnos-->
+                    <!--Bloco Endereço-->
+                    <div class="col-md-12">
+                        <div class="col-md-12 well">
+                            <h4>Endereço
+                                <button type="button" title="Adicionar Endereço" class="btn btn-success pull-right btn-xs" id="adicionar_endereco"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            </h4>
+                            <hr>
+                            <div id="bloco_endereco">
+                                <?php
+                                    $enderecos = $fornecedor->get('enderecos');
+                                    
+                                    /*
+                                     * O currentCount sempre tem que comecar com o 
+                                     * o valor 0.
+                                     * João Marcos R Stefani 
+                                     */
+                                    $currentCount = 0;
+                                   
+                                    foreach ($enderecos as $endereco) {
+                                        /*If faz a contagem de quantos estão vindo já de um
+                                         * cadastro que existe
+                                         * João Marcos R Stefani 
+                                         */
+                                        if($endereco->get('cep')){
+                                            $currentCount++;
+                                        }
+                                        /*
+                                         * João Marcos R Stefani
+                                         * Esta bloco verifica se esta vindo cep para colocar um a variavel bla 
+                                         * que é um contador para criar os blocos 
+                                         */
+                                        if($endereco->get('endereco')->getvalue()){
+                                            $bla = $currentCount - 1;
+                                            echo '<div class="col-md-12" id="bloco_endereco_'.$bla.'">';
+                                        }else{
+                                            echo '<div class="col-md-12" id="bloco_endereco_0">';
+                                        }
+                                            echo '<div class="col-md-3">';
+                                                echo $this->formLabel($endereco->get('cep'));
+                                                echo $this->formElement($endereco->get('cep'));
+                                                echo $this->formElementErrors($endereco->get('cep'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-7">';
+                                                echo $this->formLabel($endereco->get('endereco'));
+                                                echo $this->formElement($endereco->get('endereco'));
+                                                echo $this->formElementErrors($endereco->get('endereco'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-1">';
+                                                echo $this->formLabel($endereco->get('numero'));
+                                                echo $this->formElement($endereco->get('numero'));
+                                                echo $this->formElementErrors($endereco->get('numero'));
+                                            echo '</div>';
+                                            if($endereco->get('endereco')->getvalue()){
+                                                echo '<div class="col-md-1">';
+                                                    echo '<button type="button" title="Remover Endereço" class="btn btn-danger btn-xs" onclick="removerEndereco('.$bla.')" id="remover_endereco"><i class="fa fa-times" aria-hidden="true"></i></button>';
+                                                echo '</div>';
+                                            }
+                                            echo '<div class="col-md-12">';
+                                                echo $this->formLabel($endereco->get('complemento'));
+                                                echo $this->formElement($endereco->get('complemento'));
+                                                echo $this->formElementErrors($endereco->get('complemento'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-6">';
+                                                echo $this->formLabel($endereco->get('bairro'));
+                                                echo $this->formElement($endereco->get('bairro'));
+                                                echo $this->formElementErrors($endereco->get('bairro'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-5">';
+                                                echo $this->formLabel($endereco->get('cidade'));
+                                                echo $this->formElement($endereco->get('cidade'));
+                                                echo $this->formElementErrors($endereco->get('cidade'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-1">';
+                                                echo $this->formLabel($endereco->get('uf'));
+                                                echo $this->formElement($endereco->get('uf'));
+                                                echo $this->formElementErrors($endereco->get('uf'));
+                                            echo '</div>';
+                                        echo '</div>';
+                                    }
+                                    /*
+                                     * Este currentCount-- ele tira um para a contagem ficar certa
+                                     * João Marcos R Stefani
+                                     */
+                                    $currentCount --;
+                                ?> 
+                            </div>  
+                        </div>
+                    </div>    
+                    <!--Bloco Endereço-->
+                    <!--Bloco Telefone-->
+                    <div class="col-md-12">
+                        <div class="col-md-12 well">
+                            <h4>Telefone
+                                <button type="button" title="Adicionar Telefone" class="btn btn-success pull-right btn-xs" id="adicionar_telefone"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            </h4>
+                            <hr>
+                            <div id="bloco_telefone">
+                                <?php
+                                    $telefones = $fornecedor->get('telefones');
+                                    
+                                    $countTelefone = 0;
+                                    
+                                    foreach ($telefones as $telefone) {
+                                        if($endereco->get('cep')){
+                                            $countTelefone++;
+                                        }
+                                        
+                                        if($telefone->get('numero')->getvalue()){
+                                            $bla = $countTelefone - 1;
+                                            echo '<div class="col-md-12" id="bloco_telefone_'.$bla.'">';
+                                        }else{
+                                            echo '<div class="col-md-12" id="bloco_telefone_0">';
+                                        }                                        
+                                            echo '<div class="col-md-1">';
+                                                echo $this->formLabel($telefone->get('ddd'));
+                                                echo $this->formElement($telefone->get('ddd'));
+                                                echo $this->formElementErrors($telefone->get('ddd'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-5">';
+                                                echo $this->formLabel($telefone->get('numero'));
+                                                echo $this->formElement($telefone->get('numero'));
+                                                echo $this->formElementErrors($telefone->get('numero'));
+                                            echo '</div>';
+                                            echo '<div class="col-md-5">';
+                                                echo $this->formLabel($telefone->get('tipos_telefone'));
+                                                echo $this->formElement($telefone->get('tipos_telefone'));
+                                                echo $this->formElementErrors($telefone->get('tipos_telefone'));
+                                            echo '</div>';
+                                            if($telefone->get('numero')->getvalue()){
+                                                echo '<div class="col-md-1">';
+                                                    echo '<button type="button" title="Remover Endereço" class="btn btn-danger btn-xs" onclick="removerTelefone('.$bla.')" id="remover_telefone"><i class="fa fa-times" aria-hidden="true"></i></button>';
+                                                echo '</div>';
+                                            }
+                                        echo '</div>';
+                                    }
+                                    $countTelefone--;
+                                ?>    
+                            </div>    
+                        </div>
+                    </div>    
+                    <!--Bloco Telefone-->
+                    <div  class="col-md-12">
+                        <button type="button" onclick="cancelar_cadastro()" class="btn btn-danger" data-dismiss="modal"><span class="fa  fa-times"> Cancelar</button>
+                        <label for="salvar" class="btn btn-success"><i class="fa fa-save"></i> Salvar</label>
+                        <input id="salvar" name="salvar" type="submit" value="Salvar" class="hidden">
+                    </div>
+                    <?php echo $this->form()->closeTag(); ?>   
+                </div>    
+            </div>
+        </div>         
+    </div>
+</div> 
+<script>
+    
+    $(document).ready(function() {
+        $('input.cep').mask('00000-000');//Inicia
+        /*
+        * João Marcos R Stefani
+        * Bloco endereco
+        * count_endereco recebe a variavel currentCount que é PHP
+        * Este bloco adiciona mais um endereco
+        * @type String
+       */
+       var count_endereco =  '<?=$currentCount; ?>'; 
+       
+       $('#adicionar_endereco').click(function(){
+           if(count_endereco <= 2){
+               
+               count_endereco ++;
+               
+               /*
+                * Bloco para adcionar um novo endereco
+                * Lembrado do count_endereco que e um contador para identificar o id
+                * João Marcos R Stefani 
+                * @type String
+                */
+               var bloco_endereco = '<div class="col-md-12" id="bloco_endereco_'+count_endereco+'">'+  
+                                           '<hr>'+    
+                                           '<div class="col-md-3">'+
+                                               '<label>CEP</label>'+
+                                               '<input type="text" class="form-control input-sm cep" value="" name="fornecedor[enderecos]['+count_endereco+'][cep]" onchange="buscaCep('+count_endereco+')"  maxlength="9" id="cep'+count_endereco+'">'+
+                                           '</div>'+
+                                           '<div class="col-md-7">'+
+                                               '<label>Endereço</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="60" id="endereco'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][endereco]">'+
+                                           '</div>'+
+                                           '<div class="col-md-1">'+
+                                               '<label>Nº</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="10" id="numero'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][numero]">'+
+                                           '</div>'+
+                                           '<div class="col-md-1">'+
+                                               '<button type="button" title="Remover Endereço" class="btn btn-danger btn-xs" onclick="removerEndereco('+count_endereco+')" id="remover_endereco"><i class="fa fa-times" aria-hidden="true"></i></button>'+
+                                           '</div>'+
+                                           '<div class="col-md-12">'+
+                                               '<label>Complemento</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="60" id="complemento'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][complemento]">'+
+                                           '</div>'+
+                                           '<div class="col-md-6">'+
+                                               '<label>Bairro</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="60" id="bairro'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][bairro]">'+
+                                           '</div>'+
+                                           '<div class="col-md-5">'+
+                                               '<label>Cidade</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="60" id="cidade'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][cidade]">'+
+                                           '</div>'+
+                                           '<div class="col-md-1">'+
+                                               '<label>UF</label>'+
+                                               '<input type="text" class="form-control input-sm" maxlength="2" id="uf'+count_endereco+'" name="fornecedor[enderecos]['+count_endereco+'][uf]">'+
+                                           '</div>'+
+                                   '</div>';
+                         
+                $('#bloco_endereco').append(bloco_endereco);
+                $('input.cep').mask('00000-000');//Refaz todas as mask  
+            }else{
+                swal({
+                   title: "",
+                   text: "Só pode ter 4 cadastro de endereço.",
+                   type: "info"
+                });
+            }
+        });
+       
+        $('input.phone').mask("00000-0000");//Inicia
+        /*
+        * João Marcos R Stefani
+        * Bloco telefone
+        * count_telefone recebe a variavel currentCount que é PHP
+        * Este bloco adiciona mais um telefone
+        * @type String
+        */
+        var count_telefone = '<?=$countTelefone; ?>'; ; 
+        
+        var options_telefone = '<option value="1">Telefone Residencial</option>\
+                                 <option value="2">Telefone Comercial</option>\
+                                 <option value="3">Telefone Celular</option>\
+                                 <option value="4">Nextel</option>';
+        
+        $('#adicionar_telefone').click(function(){
+            count_telefone++;
+            
+            /*
+            * Bloco para adcionar um novo telefone
+            * Lembrado do count_telefone que e um contador para identificar o id
+            * João Marcos R Stefani 
+            * @type String
+            */
+            var bloco_telefone = '<div class="col-md-12" id="bloco_telefone_'+count_telefone+'">'+ 
+                                    '<hr>'+
+                                    '<div class="col-md-1">'+
+                                            '<label>DDD</label>'+
+                                            '<input type="text" class="form-control input-sm" name="fornecedor[telefones]['+count_telefone+'][ddd]" maxlength="3" id="ddd'+count_telefone+'">'+
+                                    '</div>'+
+                                    '<div class="col-md-5">'+
+                                            '<label>Número</label>'+
+                                            '<input type="text" class="form-control input-sm phone" value="" name="fornecedor[telefones]['+count_telefone+'][numero]" maxlength="10" id="numero'+count_telefone+'">'+
+                                    '</div>'+
+                                    '<div class="col-md-5">'+
+                                            '<label>Tipos de Telefone</label>'+
+                                            '<select type="text" class="form-control input-sm" name="fornecedor[telefones]['+count_telefone+'][tipos_telefone]" maxlength="3" id="tipos_telefone'+count_telefone+'"><option value="">Selecione o Tipo</option>'+options_telefone+'</select>'+
+                                    '</div>'+
+                                    '<div class="col-md-1">'+
+                                           '<button type="button" title="Remover Endereço" class="btn btn-danger btn-xs" onclick="removerTelefone('+count_telefone+')" id="remover_telefone"><i class="fa fa-times" aria-hidden="true"></i></button>'+
+                                    '</div>'+
+                                 '</div>';
+                       
+            $('#bloco_telefone').append(bloco_telefone);
+            $('input.phone').mask("00000-0000");//Refaz todas as mask
+        });  
+    });
+</script>
+
+  
+    
+

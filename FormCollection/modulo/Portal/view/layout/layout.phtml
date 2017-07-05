@@ -1,0 +1,146 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="pt-Br">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Cartório '. $this->translate('Registro Civil'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                        ->prependStylesheet($this->basePath() . '/css/erro.min.css')
+                        ->prependStylesheet($this->basePath() . '/css/sb-admin.css')
+                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css')
+                        ->prependStylesheet($this->basePath() . '/css/style.css')
+                        ->prependStylesheet($this->basePath() . '/sweetalert/sweetalert.css')
+                        ->prependStylesheet($this->basePath() . '/fullcalendar/fullcalendar.min.css')
+                        ->prependStylesheet($this->basePath() . '/css/plugins/morris.css')
+                        ->prependStylesheet($this->basePath() . '/font-awesome/css/font-awesome.min.css')
+                        
+        ;?>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            ->prependFile($this->basePath() . '/js/bootstrap.min.js')
+            ->prependFile($this->basePath() . '/js/plugins/morris/raphael.min.js')
+            ->prependFile($this->basePath() . '/js/jquery.mask.js')
+            ->prependFile($this->basePath() . '/cpf/jquery.cpf-validate.1.0.min.js')
+            ->prependFile($this->basePath() . '/cnpj/jquery.validaCnpj.js')
+            ->prependFile($this->basePath() . '/js/script.js') 
+            ->prependFile($this->basePath() . '/sweetalert/sweetalert-dev.js') 
+            ->prependFile($this->basePath() . '/cep/buscacep.min.js')
+            ->prependFile($this->basePath() . '/js/jquery.min.js')
+            ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
+            ->prependFile($this->basePath() . '/js/html5shiv.js',   'text/javascript', array('conditional' => 'lt IE 9',))
+        ;?>
+
+    </head>
+    
+    <body>
+       <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/"><img src="/img/logotec3.png" alt="..." class="img-menu-lateral"></a>
+            </div>
+            <!-- Top Menu Items -->
+            <ul class="nav navbar-right top-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="/img/usuarios/imagem1.jpg" alt="..." class="img-circle img-menu"> João Marcos <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-envelope"></i> Inbox</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-gear"></i> Settings</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-power-off"></i> Log Out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav side-nav">
+                   
+                    <li>
+                        <a href="/"><i class="fa fa-fw fa-dashboard"></i> Painel de Controle</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo $this->url('agenda')?>"><i class="fa fa-fw fa-book"></i> Agenda</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo1"><i class="fa fa-fw fa-money"></i> Financeiro <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo1" class="collapse">
+                            <li>
+                                <a href="<?php echo $this->url('fornecedor')?>">Fornecedor</a>
+                            </li>
+                            <li>
+                                <a href="#">Contas Apagar</a>
+                            </li>
+                            <li>
+                                <a href="#">Contas Areceber</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->url('banco')?>">Banco</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                    </li>
+                    <li>
+                        <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                        <ul id="demo" class="collapse">
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                            <li>
+                                <a href="#">Dropdown Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                    </li>
+                    <li>
+                        <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </nav>
+        
+        <?php echo $this->content; ?></br>
+             
+        <?php echo $this->inlineScript() ?>
+       
+
+    </body>
+</html>
